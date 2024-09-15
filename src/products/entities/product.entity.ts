@@ -10,6 +10,6 @@ export class Product {
   price: number;
   @Column({ type: "int" })
   countSealed: number;
-  @Column({ type: "uuid" })
+  @Column({ type: "uuid", nullable: true })
   provider: string;
 }
