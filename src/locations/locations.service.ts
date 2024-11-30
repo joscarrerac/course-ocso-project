@@ -3,10 +3,14 @@ import { CreateLocationDto } from "./dto/create-location.dto";
 import { UpdateLocationDto } from "./dto/update-location.dto";
 import { Location } from "./entities/location.entity";
 import { Repository } from "typeorm";
+import { InjectRepository } from "@nestjs/typeorm";
 
 @Injectable()
 export class LocationsService {
-  constructor(private locationsRepository: Repository<Location>) {}
+  
+  constructor(
+    @InjectRepository(Location)
+    private locationsRepository: Repository<Location>) {}
   create(createLocationDto: CreateLocationDto) {
     return this.locationsRepository.save(createLocationDto);
   }
@@ -21,12 +25,12 @@ export class LocationsService {
     return location
   }
 
-  update(id: number, updateLocationDto: UpdateLocationDto) {
-    const location = this.locationsRepository.preload({
+  async update(id: number, updateLocationDto: UpdateLocationDto) {
+    const location = await this.locationsRepository.preload({
       locationId: id,
       ...updateLocationDto,
     })
-    return location
+    return this.locationsRepository.save(location);
   }
 
   remove(id: number) {
