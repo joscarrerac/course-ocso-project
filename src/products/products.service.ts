@@ -13,15 +13,16 @@ export class ProductsService {
     private productRepository: Repository<Product>
   ) {}
 
-  
-
   create(createProductDto: CreateProductDto) {
     const product = this.productRepository.save(createProductDto);
     return product;
   }
 
   findAll() {
-    return this.productRepository.find();
+    return this.productRepository.find({
+      loadEagerRelations: true,
+      relations: ["provider"],
+    });
   }
 
   findOne(id: string) {
@@ -31,9 +32,9 @@ export class ProductsService {
   }
 
   findByProvider(id: string) {
-    const products = this.productRepository.find({where:{ provider: id} });
-    if (!products) throw new NotFoundException("Products not found");
-    return products;
+   return this.productRepository.findBy({provider: {
+      proivderId: id
+   }});
   }
 
   async update(id: string, updateProductDto: UpdateProductDto) {
