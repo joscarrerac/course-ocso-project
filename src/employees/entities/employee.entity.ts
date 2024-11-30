@@ -1,4 +1,4 @@
-import e from "express";
+
 import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
@@ -17,5 +17,8 @@ export class Employee {
 
   @Column("text")
   email: string;
+
+  @Column({type: "text", nullable: true})
+  photoUrl: string;
 
 }
