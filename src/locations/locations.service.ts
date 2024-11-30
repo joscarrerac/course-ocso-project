@@ -30,6 +30,6 @@ export class LocationsService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} location`;
+    return this.locationsRepository.delete({ locationId: id });
   }
 }
